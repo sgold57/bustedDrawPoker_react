@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.get('/new', (_, res) => {
-  axios.get("https://deckofcardsapi.com/api/deck/new")
+  axios.get("https://deckofcardsapi.com/api/deck/new/draw/?count=5")
     .then(function({ data: newDeck }) {
       res.send(newDeck)
     })
