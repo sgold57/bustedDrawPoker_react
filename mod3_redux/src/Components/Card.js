@@ -8,7 +8,7 @@ export default class Card extends Component {
 
   render(){
     return(
-        <img src={this.props.cardImage} alt={this.props.cardCode} />
+      <img src={this.props.cardImage} alt={this.props.cardAlt} />
     )
   }
 }
