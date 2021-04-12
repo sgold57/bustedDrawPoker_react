@@ -11,9 +11,7 @@ export default class HandContainer extends Component {
   render(){
     return(
       <div>
-        {this.props.startingHand.forEach(card => {
-          <img src={card.image} alt={card.code} />
-        }
+        {this.props.startingHand.map(card => <Card cardImage={card.image} cardAlt={card.code} />
         )}
       </div>
     )
