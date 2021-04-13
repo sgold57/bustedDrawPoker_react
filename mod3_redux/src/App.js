@@ -26,6 +26,7 @@ export default class App extends Component {
   render(){
     return(
       <div className="App">
+        <h1 className="title-header">BUSTED DRAW POKER</h1>
         {this.state.dealCards
           ? <HandContainer deckId={this.state.deckId} startingHand={this.state.startingHand} />
           : null 

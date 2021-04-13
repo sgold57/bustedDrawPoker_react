@@ -10,7 +10,7 @@ export default class HandContainer extends Component {
 
   render(){
     return(
-      <div>
+      <div className="hand-div">
         {this.props.startingHand.map(card => <Card cardImage={card.image} cardAlt={card.code} />
         )}
       </div>
