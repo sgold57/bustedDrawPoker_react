@@ -8,7 +8,8 @@ export default class App extends Component {
   state = {
     deckId: "",
     startingHand: [],
-    dealCards: false
+    dealCards: false,
+    cardsToSwap: []
   }
   
   componentDidMount(){
@@ -22,6 +23,7 @@ export default class App extends Component {
         })
       })
   }
+
 
   render(){
     return(
