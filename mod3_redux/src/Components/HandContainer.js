@@ -3,13 +3,21 @@ import Card from "./Card";
 
 export default class HandContainer extends Component {
 
-handleHitClick = () => {
-  console.log("ok!")
+
+componentDidMount(){
+  console.log(this.props.startingHand);
 }
+
   render(){
     return(
       <div className="hand-div">
-        {this.props.startingHand.map(card => <Card cardImage={card.image} cardAlt={card.code} onClick={this.handleHitClick} />
+        {this.props.startingHand.map(card => 
+          <Card 
+            key={card.code}
+            cardImage={card.image} 
+            cardAlt={card.code} 
+            handleHitClick={this.props.handleHitClick} 
+          />
         )}
       </div>
     )
