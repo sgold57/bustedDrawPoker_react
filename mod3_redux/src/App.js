@@ -13,7 +13,7 @@ export default class App extends Component {
   }
   
   componentDidMount(){
-    fetch("http://localhost:8080/new")
+    fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=5")
       .then(response => response.json())
       .then(({ deck_id, cards }) => {
         this.setState({
@@ -32,6 +32,12 @@ export default class App extends Component {
       })
   }
 
+  takeHit = () => {
+    fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=${this.state.cardsToSwap.length}`)
+      .then(response => response.json())
+      .then(console.log)
+  }
+
 
   render(){
     return(
@@ -45,6 +51,9 @@ export default class App extends Component {
             />
           : null 
         }
+        <button className="hit-button" onClick={() => this.takeHit()}>
+          HIT FOR {this.state.cardsToSwap.length} CARDS
+        </button>
       </div>
   );
   }
