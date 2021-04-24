@@ -25,9 +25,11 @@ export default class App extends Component {
   }
 
   handleHitClick = (cardInfo) => {
-    this.setState({
-      cardsToSwap: [...this.state.cardsToSwap, cardInfo]
-    })
+    return this.state.cardsToSwap.find(card => card === cardInfo)
+    ? null
+    : this.setState({
+        cardsToSwap: [...this.state.cardsToSwap, cardInfo]
+      })
   }
 
 

@@ -5,7 +5,6 @@ export default class HandContainer extends Component {
 
 
 componentDidMount(){
-  console.log(this.props.startingHand);
 }
 
   render(){
