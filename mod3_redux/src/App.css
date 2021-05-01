@@ -54,7 +54,13 @@ body {
   background-size: cover;
 }
 
+@font-face {
+  font-family: Eastwood;
+  src: url("./Fonts/Eastwood.ttf") format("truetype")
+}
+
 .title-header {
+	font-family: Eastwood;
   text-align: center;
   font-size: 56px;
 }
