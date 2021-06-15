@@ -24,18 +24,31 @@ export default class App extends Component {
       })
   }
 
-  handleHitClick = (cardInfo) => {
+  handleHitClick = (cardInfo, card) => {
     return this.state.cardsToSwap.find(card => card === cardInfo)
     ? null
     : this.setState({
-        cardsToSwap: [...this.state.cardsToSwap, cardInfo]
+        cardsToSwap: [...this.state.cardsToSwap, card]
       })
   }
 
   takeHit = () => {
     fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=${this.state.cardsToSwap.length}`)
       .then(response => response.json())
-      .then(console.log)
+      .then(({ cards }) => {
+        let newCardsIndex = 0
+        this.state.cardsToSwap.forEach(oldCard => {
+          console.log(oldCard)
+          let cardIndex = this.state.startingHand.findIndex(card => card === oldCard) 
+          this.state.startingHand.splice(cardIndex, 1, cards[newCardsIndex]);
+          this.setState({
+            startingHand: this.state.startingHand
+          })
+          
+          newCardsIndex++;
+        })
+      })
+    
   }
 
 
