@@ -11,8 +11,9 @@ componentDidMount(){
   render(){
     return(
       <div className="hand-div">
-        {this.props.startingHand.map(card => 
+        {this.props.hand.map(card => 
           <Card 
+            className="card-slot"
             key={card.code}
             card={card}
             cardImage={card.image} 

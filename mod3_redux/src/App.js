@@ -7,8 +7,9 @@ export default class App extends Component {
 
   state = {
     deckId: "",
-    startingHand: [],
+    hand: [],
     dealCards: false,
+    buttonClicked: false,
     cardsToSwap: []
   }
   
@@ -18,7 +19,7 @@ export default class App extends Component {
       .then(({ deck_id, cards }) => {
         this.setState({
           deckId: deck_id,
-          startingHand: cards,
+          hand: cards,
           dealCards: true
         })
       })
@@ -39,15 +40,57 @@ export default class App extends Component {
         let newCardsIndex = 0
         this.state.cardsToSwap.forEach(oldCard => {
           console.log(oldCard)
-          let cardIndex = this.state.startingHand.findIndex(card => card === oldCard) 
-          this.state.startingHand.splice(cardIndex, 1, cards[newCardsIndex]);
+          let cardIndex = this.state.hand.findIndex(card => card === oldCard) 
+          this.state.hand.splice(cardIndex, 1, cards[newCardsIndex]);
           this.setState({
-            startingHand: this.state.startingHand
+            hand: this.state.hand
           })
           
           newCardsIndex++;
         })
+
+        evaluateHand(this.state.hand);
       })
+
+  function evaluateHand(hand) {
+    console.log(hand)
+    let valueArray = []
+    let suitArray = []
+    
+    hand.forEach(card => {
+      console.log(card)
+      valueArray.push(card.code[0])
+      suitArray.push(card.code[1])
+    })
+
+  console.log(hand)
+  console.log(valueArray)
+  console.log(suitArray)
+
+
+  let numeratedFaceCards = []
+  valueArray.forEach(value => {
+    if(value === "0") {
+      value = 10
+      console.log(value)
+    }else if (value === "J"){
+      value = 11
+    }else if(value === "Q"){
+      value = 12
+    }else if(value === "K"){
+      value = 13
+    }else if(value === "A"){
+      value = 1
+    } else {
+      value = parseInt(value)
+    }
+    numeratedFaceCards.push(value)
+  })
+
+  console.log(numeratedFaceCards.sort())
+
+    return hand;
+  }
     
   }
 
@@ -59,12 +102,21 @@ export default class App extends Component {
         {this.state.dealCards
           ? <HandContainer 
               deckId={this.state.deckId} 
-              startingHand={this.state.startingHand} 
+              hand={this.state.hand} 
               handleHitClick={this.handleHitClick} 
             />
           : null 
-        }
-        <button className="hit-button" onClick={() => this.takeHit()}>
+        } 
+        <button 
+          className="hit-button" 
+          style={ this.state.buttonClicked ? { display: 'none' } : { display: 'block'}} 
+          onClick={() => {
+            this.takeHit()
+            this.setState({
+              buttonClicked: true
+            })
+          }}
+        >
           HIT FOR {this.state.cardsToSwap.length} CARDS
         </button>
       </div>
