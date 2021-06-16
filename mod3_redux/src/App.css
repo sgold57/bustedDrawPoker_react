@@ -54,19 +54,35 @@ body {
   background-size: cover;
 }
 
+@font-face {
+	font-family: Wantedo;
+	src: url("./Fonts/Wantedo.otf") format("opentype");
+}
+
 .title-header {
+	font-family: Wantedo;
+	margin: 25px 25px 25px 25px;   
+	color: red;
   text-align: center;
-  font-size: 56px;
+  font-size: 72px;
 }
 
 .hand-div{
   display: flex;
-  margin-top: 200px;
-  margin-left: 200px;
-  margin-right: 200px;
-  border: 5px solid yellow;
+  margin-top: 250px 250px 250px 250px;
+	justify-content: space-evenly;
+}
+
+.card-img{
+	border: double #F80808;
+	border-radius: 15px;
+	margin-top: 25px;
+	margin-bottom:25px;
 }
 
 .hit-button{
-	margin-top: 25px;
+	display: block;
+	margin: auto;
+	padding: 2px;
+	width: 15%;
 }
