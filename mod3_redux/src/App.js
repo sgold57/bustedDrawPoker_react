@@ -63,36 +63,54 @@ export default class App extends Component {
       suitArray.push(card.code[1])
     })
 
-  console.log(hand)
-  console.log(valueArray)
-  console.log(suitArray)
+    let flushCheckSuit = suitArray[0];
+    let straightCheck = numerateFaceCards(valueArray);
 
+    console.log(checkForFlush(flushCheckSuit, suitArray))
 
-  let numeratedFaceCards = []
-  valueArray.forEach(value => {
-    if(value === "0") {
-      value = 10
-      console.log(value)
-    }else if (value === "J"){
-      value = 11
-    }else if(value === "Q"){
-      value = 12
-    }else if(value === "K"){
-      value = 13
-    }else if(value === "A"){
-      value = 1
-    } else {
-      value = parseInt(value)
-    }
-    numeratedFaceCards.push(value)
-  })
+  console.log(flushCheckSuit);
+  console.log(straightCheck);
 
-  console.log(numeratedFaceCards.sort())
+  
 
     return hand;
+
+  }
+
+  function numerateFaceCards(cardHand) {
+    let numeratedFaceCards = []
+    cardHand.forEach(value => {
+      if(value === "0") {
+        value = 10
+      }else if (value === "J"){
+        value = 11
+      }else if(value === "Q"){
+        value = 12
+      }else if(value === "K"){
+        value = 13
+      }else if(value === "A"){
+        value = 1
+      } else {
+        value = parseInt(value)
+      }
+      numeratedFaceCards.push(value)
+      
+    })
+    let sortedNumeratedCards = numeratedFaceCards.sort()
+    return sortedNumeratedCards;
+  }
+
+  function checkForFlush(suit, cardHand) {
+    for (let i = 1; i < cardHand.length; i++){
+      if(suit !== cardHand[i]){
+        return false;
+      }      
+    }
+    return true;
   }
     
-  }
+}
+
 
 
   render(){
