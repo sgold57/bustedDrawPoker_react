@@ -53,7 +53,6 @@ export default class App extends Component {
       })
 
   function evaluateHand(hand) {
-    console.log(hand)
     let valueArray = [];
     let valueBreakdown = {};
     let suitArray = [];
@@ -70,11 +69,15 @@ export default class App extends Component {
 
     let flush = checkForFlush(flushCheckSuit, suitArray);
     let valueFrequencies = breakdownValues(valueArray, valueBreakdown);
-    
+    let valueEvaluation = pairTwoPairTripsBoatCheck(valueFrequencies);
+  
 
   console.log(straightCheck);
   console.log(flush);
   console.log(valueFrequencies);
+  console.log(valueEvaluation);
+
+
 
   
 
@@ -126,8 +129,33 @@ export default class App extends Component {
       })
       return valueBreakdown;
     }
+
+  function pairTwoPairTripsBoatCheck(valueFrequencies){
+    let pairs = Object.values(valueFrequencies).filter(value => value === 2).length;
+    let trips = Object.values(valueFrequencies).filter(value => value === 3).length;
+    let quads = Object.values(valueFrequencies).filter(value => value === 4).length;
+    
+    if (quads === 1){
+      return "QUADS";
+    } else if (trips === 1) {
+      if (pairs === 1) {
+        return "FULL HOUSE";
+      } else {
+        return "TRIPS";
+      }
+    } else if (pairs === 2){
+      return "TWO PAIR"
+    } else if (pairs === 1){
+        return "PAIR"
+    } else {
+      return false;
+    }
+
+  }
+    
   
   }
+
     
 
 
