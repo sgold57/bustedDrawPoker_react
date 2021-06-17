@@ -54,8 +54,9 @@ export default class App extends Component {
 
   function evaluateHand(hand) {
     console.log(hand)
-    let valueArray = []
-    let suitArray = []
+    let valueArray = [];
+    let valueBreakdown = {};
+    let suitArray = [];
     
     hand.forEach(card => {
       console.log(card)
@@ -64,12 +65,16 @@ export default class App extends Component {
     })
 
     let flushCheckSuit = suitArray[0];
-    let straightCheck = numerateFaceCards(valueArray);
+    let straightCheck = valueArray.sort();
+    // let straightCheck = numerateFaceCards(valueArray);
 
-    console.log(checkForFlush(flushCheckSuit, suitArray))
+    let flush = checkForFlush(flushCheckSuit, suitArray);
+    let valueFrequencies = breakdownValues(valueArray, valueBreakdown);
+    
 
-  console.log(flushCheckSuit);
   console.log(straightCheck);
+  console.log(flush);
+  console.log(valueFrequencies);
 
   
 
@@ -77,28 +82,31 @@ export default class App extends Component {
 
   }
 
-  function numerateFaceCards(cardHand) {
-    let numeratedFaceCards = []
-    cardHand.forEach(value => {
-      if(value === "0") {
-        value = 10
-      }else if (value === "J"){
-        value = 11
-      }else if(value === "Q"){
-        value = 12
-      }else if(value === "K"){
-        value = 13
-      }else if(value === "A"){
-        value = 1
-      } else {
-        value = parseInt(value)
-      }
-      numeratedFaceCards.push(value)
+
+  // MAYBE DON'T NEED THIS BECAUSE OF HOW SORT FUNCTION WORKS W/ DEFAULT VALUES
+
+  // function numerateFaceCards(cardHand) {
+  //   let numeratedFaceCards = []
+  //   cardHand.forEach(value => {
+  //     if(value === "0") {
+  //       value = 10
+  //     }else if (value === "J"){
+  //       value = 11
+  //     }else if(value === "Q"){
+  //       value = 12
+  //     }else if(value === "K"){
+  //       value = 13
+  //     }else if(value === "A"){
+  //       value = 1
+  //     } else {
+  //       value = parseInt(value)
+  //     }
+  //     numeratedFaceCards.push(value)
       
-    })
-    let sortedNumeratedCards = numeratedFaceCards.sort()
-    return sortedNumeratedCards;
-  }
+  //   })
+  //   let sortedNumeratedCards = numeratedFaceCards.sort()
+  //   return sortedNumeratedCards;
+  // }
 
   function checkForFlush(suit, cardHand) {
     for (let i = 1; i < cardHand.length; i++){
@@ -108,8 +116,19 @@ export default class App extends Component {
     }
     return true;
   }
+
+  function breakdownValues(valueArray, valueBreakdown){
+    valueArray.forEach(value => {
+      console.log(value)
+      Object.keys(valueBreakdown).find(element => element === value)
+        ? valueBreakdown[value]++
+        : valueBreakdown[value] = 1;   
+      })
+      return valueBreakdown;
+    }
+  
+  }
     
-}
 
 
 
