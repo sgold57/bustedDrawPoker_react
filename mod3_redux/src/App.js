@@ -10,7 +10,20 @@ export default class App extends Component {
     hand: [],
     dealCards: false,
     buttonClicked: false,
-    cardsToSwap: []
+    cardsToSwap: [],
+    straightHands: [
+      '2,3,4,5,A',
+      '2,3,4,5,6',
+      '3,4,5,6,7',
+      '4,5,6,7,8',
+      '5,6,7,8,9',
+      '0,6,7,8,9',
+      '0,7,8,9,J',
+      '0,8,9,J,Q',
+      '0,9,J,K,Q',
+      '0,A,J,K,Q'
+    ]
+
   }
   
   componentDidMount(){
@@ -39,7 +52,6 @@ export default class App extends Component {
       .then(({ cards }) => {
         let newCardsIndex = 0
         this.state.cardsToSwap.forEach(oldCard => {
-          console.log(oldCard)
           let cardIndex = this.state.hand.findIndex(card => card === oldCard) 
           this.state.hand.splice(cardIndex, 1, cards[newCardsIndex]);
           this.setState({
@@ -49,50 +61,93 @@ export default class App extends Component {
           newCardsIndex++;
         })
 
-        evaluateHand(this.state.hand);
+        let handResult = evaluateHand(this.state.hand, this.state.straightHands);
+        return (
+        <h4>{handResult}</h4>
+        )
       })
 
-  function evaluateHand(hand) {
-    console.log(hand)
-    let valueArray = []
-    let suitArray = []
+  function evaluateHand(hand, straightHands) {
+    let handResult = "";
+    let valueArray = [];
+    let valueBreakdown = {};
+    let suitArray = [];
     
     hand.forEach(card => {
-      console.log(card)
       valueArray.push(card.code[0])
       suitArray.push(card.code[1])
     })
 
-  console.log(hand)
-  console.log(valueArray)
-  console.log(suitArray)
+    let flushCheckSuit = suitArray[0];
+    let forStraightCheck = valueArray.sort();
+    let flush = checkForFlush(flushCheckSuit, suitArray);
+    let valueFrequencies = breakdownValues(valueArray, valueBreakdown);
+    let valueEvaluation = pairTwoPairTripsBoatCheck(valueFrequencies, forStraightCheck, straightHands);
+  
 
-
-  let numeratedFaceCards = []
-  valueArray.forEach(value => {
-    if(value === "0") {
-      value = 10
-      console.log(value)
-    }else if (value === "J"){
-      value = 11
-    }else if(value === "Q"){
-      value = 12
-    }else if(value === "K"){
-      value = 13
-    }else if(value === "A"){
-      value = 1
+    if (flush && valueEvaluation === "STRAIGHT"){
+      handResult = "STRAIGHT FLUSH"
+    } else if (flush) {
+      handResult = "FLUSH"
     } else {
-      value = parseInt(value)
+      handResult = valueEvaluation
     }
-    numeratedFaceCards.push(value)
-  })
+  console.log(handResult)
+  return handResult;
+}
 
-  console.log(numeratedFaceCards.sort())
+  function checkForFlush(suit, cardHand) {
+    for (let i = 1; i < cardHand.length; i++){
+      if(suit !== cardHand[i]){
+        return false;
+      }      
+    }
+    return true;
+  }
 
-    return hand;
+  function breakdownValues(valueArray, valueBreakdown){
+    valueArray.forEach(value => {
+      Object.keys(valueBreakdown).find(element => element === value)
+        ? valueBreakdown[value]++
+        : valueBreakdown[value] = 1;   
+      })
+      
+    return valueBreakdown;
+  }
+
+  function pairTwoPairTripsBoatCheck(valueFrequencies, forStraightCheck, straightHands){
+    let pairs = Object.values(valueFrequencies).filter(value => value === 2).length;
+    let trips = Object.values(valueFrequencies).filter(value => value === 3).length;
+    let quads = Object.values(valueFrequencies).filter(value => value === 4).length;
+    
+    if (quads === 1){
+      return "QUADS";
+    } else if (trips === 1) {
+      if (pairs === 1) {
+        return "FULL HOUSE";
+      } else {
+        return "TRIPS";
+      }
+    } else if (pairs === 2){
+      return "TWO PAIR"
+    } else if (pairs === 1){
+        return "PAIR"
+    } else {
+      return straightCheck(forStraightCheck, straightHands);
+    }
+
   }
     
+  function straightCheck(array, straightHands){    
+    if (straightHands.find(hand => hand === array.toString())) {
+      return "STRAIGHT"
+    } else {
+      return "NO HAND"
+    }
   }
+  
+}
+
 
 
   render(){
@@ -125,3 +180,31 @@ export default class App extends Component {
 }
 
 
+
+
+  // MAYBE DON'T NEED THIS BECAUSE OF HOW SORT FUNCTION WORKS W/ DEFAULT VALUES
+
+  // function numerateFaceCards(cardHand) {
+  //   let numeratedFaceCards = []
+  //   cardHand.forEach(value => {
+  //     if(value === "0") {
+  //       value = 10
+  //     }else if (value === "J"){
+  //       value = 11
+  //     }else if(value === "Q"){
+  //       value = 12
+  //     }else if(value === "K"){
+  //       value = 13
+  //     }else if(value === "A"){
+  //       value = 1
+  //     } else {
+  //       value = parseInt(value)
+  //     }
+  //     numeratedFaceCards.push(value)
+      
+  //   })
+  //   let sortedNumeratedCards = numeratedFaceCards.sort()
+  //   return sortedNumeratedCards;
+  // }
+
+  // let straightCheck = numerateFaceCards(valueArray);
