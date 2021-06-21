@@ -87,7 +87,9 @@ body {
 	width: 15%;
 }
 
-.final-hand-header{
-	color:blue;
+.result-container{
+	color:red;
+	font-family: Wantedo;
 	font-size:54px;
+	text-align: center;
 }
