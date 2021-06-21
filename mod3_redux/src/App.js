@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import HandContainer from "./Components/HandContainer"
+import HandContainer from "./Components/HandContainer";
+import ResultContainer from "./Components/ResultContainer";
+
 
 
 export default class App extends Component {
@@ -22,7 +24,8 @@ export default class App extends Component {
       '0,8,9,J,Q',
       '0,9,J,K,Q',
       '0,A,J,K,Q'
-    ]
+    ],
+    finalHand: ""
 
   }
   
@@ -54,20 +57,21 @@ export default class App extends Component {
         this.state.cardsToSwap.forEach(oldCard => {
           let cardIndex = this.state.hand.findIndex(card => card === oldCard) 
           this.state.hand.splice(cardIndex, 1, cards[newCardsIndex]);
-          this.setState({
-            hand: this.state.hand
-          })
+    
           
           newCardsIndex++;
         })
 
-        let handResult = evaluateHand(this.state.hand, this.state.straightHands);
-        return (
-        <h4>{handResult}</h4>
-        )
-      })
+        this.setState({
+          buttonClicked: !this.state.buttonClicked,
+        })
 
-  function evaluateHand(hand, straightHands) {
+
+        
+      })
+  }
+
+  evaluateHand = (hand, straightHands) => {
     let handResult = "";
     let valueArray = [];
     let valueBreakdown = {};
@@ -77,6 +81,10 @@ export default class App extends Component {
       valueArray.push(card.code[0])
       suitArray.push(card.code[1])
     })
+
+    console.log(valueArray);
+    console.log(suitArray);
+
 
     let flushCheckSuit = suitArray[0];
     let forStraightCheck = valueArray.sort();
@@ -92,9 +100,8 @@ export default class App extends Component {
     } else {
       handResult = valueEvaluation
     }
-  console.log(handResult)
   return handResult;
-}
+
 
   function checkForFlush(suit, cardHand) {
     for (let i = 1; i < cardHand.length; i++){
@@ -145,7 +152,6 @@ export default class App extends Component {
       return "NO HAND"
     }
   }
-  
 }
 
 
@@ -165,15 +171,21 @@ export default class App extends Component {
         <button 
           className="hit-button" 
           style={ this.state.buttonClicked ? { display: 'none' } : { display: 'block'}} 
-          onClick={() => {
-            this.takeHit()
-            this.setState({
-              buttonClicked: true
-            })
-          }}
+          onClick={() => this.takeHit()}
+            // let handResult = this.evaluateHand(this.state.hand, this.state.straightHands);
+
+            // console.log(handResult)
+            // console.log(this.state)
         >
           HIT FOR {this.state.cardsToSwap.length} CARDS
         </button>
+        {this.state.buttonClicked
+          ? <ResultContainer 
+              evaluateHand={this.evaluateHand} 
+              finalHand={this.state.hand} 
+              straightHands={this.state.straightHands} 
+            />
+          : null}
       </div>
   );
   }
