@@ -16,6 +16,7 @@ componentDidMount(){
             className="card-slot"
             key={card.code}
             card={card}
+            cardCode={card.code}
             cardImage={card.image} 
             cardAlt={card.code} 
             handleHitClick={this.props.handleHitClick} 

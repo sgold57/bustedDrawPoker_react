@@ -12,7 +12,7 @@ export default class Card extends Component {
         className="card-img"
         src={this.props.cardImage} 
         alt={this.props.cardAlt} 
-        onClick={() => {this.props.handleHitClick(this.props.cardInfo, this.props.card)}}
+        onClick={() => {this.props.handleHitClick(this.props.cardCode, this.props.card)}}
       />
     )
   }

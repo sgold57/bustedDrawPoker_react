@@ -41,12 +41,24 @@ export default class App extends Component {
       })
   }
 
-  handleHitClick = (cardInfo, card) => {
-    return this.state.cardsToSwap.find(card => card === cardInfo)
-    ? null
-    : this.setState({
+  handleHitClick = (cardCode, card) => {
+
+    if (this.state.cardsToSwap.find(card => card.code === cardCode)){
+      return this.setState({
+        cardsToSwap: this.state.cardsToSwap.filter(card => card.code !== cardCode)
+      })
+    } else {
+      return this.setState({
         cardsToSwap: [...this.state.cardsToSwap, card]
       })
+    }
+    
+    
+    // return this.state.cardsToSwap.find(card => card === cardInfo)
+    // ? null
+    // : this.setState({
+    //     cardsToSwap: [...this.state.cardsToSwap, card]
+    //   })
   }
 
   takeHit = () => {
@@ -81,10 +93,6 @@ export default class App extends Component {
       valueArray.push(card.code[0])
       suitArray.push(card.code[1])
     })
-
-    console.log(valueArray);
-    console.log(suitArray);
-
 
     let flushCheckSuit = suitArray[0];
     let forStraightCheck = valueArray.sort();
