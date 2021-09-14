@@ -20,6 +20,7 @@ componentDidMount(){
             cardImage={card.image} 
             cardAlt={card.code} 
             handleHitClick={this.props.handleHitClick} 
+            buttonClicked={this.props.buttonClicked}
           />
         )}
       </div>

@@ -53,12 +53,6 @@ export default class App extends Component {
       })
     }
     
-    
-    // return this.state.cardsToSwap.find(card => card === cardInfo)
-    // ? null
-    // : this.setState({
-    //     cardsToSwap: [...this.state.cardsToSwap, card]
-    //   })
   }
 
   takeHit = () => {
@@ -77,7 +71,6 @@ export default class App extends Component {
         this.setState({
           buttonClicked: !this.state.buttonClicked,
         })
-
 
         
       })
@@ -173,6 +166,7 @@ export default class App extends Component {
               deckId={this.state.deckId} 
               hand={this.state.hand} 
               handleHitClick={this.handleHitClick} 
+              buttonClicked={this.state.buttonClicked}
             />
           : null 
         } 
