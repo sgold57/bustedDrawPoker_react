@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
-import HandContainer from "./Components/HandContainer";
-import ResultContainer from "./Components/ResultContainer";
+import '../App.css';
+import HandContainer from "./HandContainer";
+import ResultContainer from "./ResultContainer";
 
 
 export default class Game extends Component {
@@ -32,11 +32,21 @@ export default class Game extends Component {
     fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=5")
       .then(response => response.json())
       .then(({ deck_id, cards }) => {
+        let params = new URLSearchParams(window.location.search);
+        let numHands = params.get('numHands')
+        console.log(numHands)
+        // let numHands = params.get("numHands")
+        // console.log(numHands)
+        // let numberOfHands = URLSearchParams.get("numHands")
+        // console.log(numberOfHands)
+        
         this.setState({
+          numHands: numHands,
           deckId: deck_id,
           hand: cards,
           dealCards: true
         })
+
       })
   }
 
