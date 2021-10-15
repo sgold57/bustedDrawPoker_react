@@ -67,6 +67,18 @@ body {
   font-size: 72px;
 }
 
+.game-start-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.game-start-text {
+	font-family: Wantedo;
+	color: red;
+  font-size: 24px;
+}
+
+
 .hand-div{
   display: flex;
   margin-top: 250px 250px 250px 250px;

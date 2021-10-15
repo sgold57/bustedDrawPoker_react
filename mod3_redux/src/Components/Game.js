@@ -41,7 +41,7 @@ export default class Game extends Component {
         // console.log(numberOfHands)
         
         this.setState({
-          numHands: numHands,
+          numHands: +numHands,
           deckId: deck_id,
           hand: cards,
           dealCards: true

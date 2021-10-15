@@ -7,8 +7,8 @@ export default class GameStart extends Component {
 render(){
   return (
     <div>
-        <form action="/newGame">
-          <label for='numHands'>How many hands would you like to play?</label>
+        <form className='game-start-form' action="/newGame">
+          <label className='game-start-text'>How many hands would you like to play?</label>
           <select name='numHands'>
               <option value='1'>1</option>
               <option value='3'>3</option>
