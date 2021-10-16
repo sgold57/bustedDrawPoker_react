@@ -9,7 +9,6 @@ export default class Game extends Component {
   state = {
     deckId: "",
     hand: [],
-    dealCards: false,
     buttonClicked: false,
     cardsToSwap: [],
     straightHands: [
@@ -24,7 +23,8 @@ export default class Game extends Component {
       '0,9,J,K,Q',
       '0,A,J,K,Q'
     ],
-    finalHand: ""
+    finalHand: "",
+    numHands: undefined,
 
   }
   
@@ -34,17 +34,11 @@ export default class Game extends Component {
       .then(({ deck_id, cards }) => {
         let params = new URLSearchParams(window.location.search);
         let numHands = params.get('numHands')
-        console.log(numHands)
-        // let numHands = params.get("numHands")
-        // console.log(numHands)
-        // let numberOfHands = URLSearchParams.get("numHands")
-        // console.log(numberOfHands)
         
         this.setState({
           numHands: +numHands,
           deckId: deck_id,
           hand: cards,
-          dealCards: true
         })
 
       })
@@ -168,15 +162,12 @@ export default class Game extends Component {
   render(){
     return(
       <div className="App">
-        {this.state.dealCards
-          ? <HandContainer 
+        <HandContainer 
               deckId={this.state.deckId} 
               hand={this.state.hand} 
               handleHitClick={this.handleHitClick} 
               buttonClicked={this.state.buttonClicked}
-            />
-          : null 
-        } 
+          />
         <button 
           className="hit-button" 
           style={ this.state.buttonClicked ? { display: 'none' } : { display: 'block'}} 
@@ -193,6 +184,7 @@ export default class Game extends Component {
               evaluateHand={this.evaluateHand} 
               finalHand={this.state.hand} 
               straightHands={this.state.straightHands} 
+              numHands={this.state.numHands}
             />
           : null}
       </div>
@@ -229,3 +221,4 @@ export default class Game extends Component {
   // }
 
   // let straightCheck = numerateFaceCards(valueArray);
+
