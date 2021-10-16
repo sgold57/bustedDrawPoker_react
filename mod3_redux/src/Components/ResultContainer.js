@@ -2,9 +2,6 @@ import { React, Component } from 'react';
 
 export default class ResultContainer extends Component{
 
-  componentDidMount(){
-    console.log(this.props.finalHand);
-  }
 
   render(){
     return (
