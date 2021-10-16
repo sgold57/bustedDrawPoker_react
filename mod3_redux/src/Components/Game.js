@@ -163,19 +163,18 @@ export default class Game extends Component {
     return(
       <div className="App">
         <HandContainer 
-              deckId={this.state.deckId} 
-              hand={this.state.hand} 
-              handleHitClick={this.handleHitClick} 
-              buttonClicked={this.state.buttonClicked}
-          />
+          deckId={this.state.deckId} 
+          hand={this.state.hand} 
+          handleHitClick={this.handleHitClick}             
+          buttonClicked={this.state.buttonClicked}
+        />
         <button 
           className="hit-button" 
-          style={ this.state.buttonClicked ? { display: 'none' } : { display: 'block'}} 
+          style={ this.state.buttonClicked ? 
+                  { display: 'none' } : 
+                  { display: 'block'}
+                }
           onClick={() => this.takeHit()}
-            // let handResult = this.evaluateHand(this.state.hand, this.state.straightHands);
-
-            // console.log(handResult)
-            // console.log(this.state)
         >
           HIT FOR {this.state.cardsToSwap.length} CARDS
         </button>
