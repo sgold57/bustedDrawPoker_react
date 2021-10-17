@@ -25,23 +25,52 @@ export default class Game extends Component {
     ],
     finalHand: "",
     numHands: undefined,
+    gameInProgress: false
 
   }
   
   componentDidMount(){
-    fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=5")
+    this.newHand()
+  }
+  
+  newHand = () => {
+    
+    if (!this.state.gameInProgress){
+      fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=5")
       .then(response => response.json())
       .then(({ deck_id, cards }) => {
         let params = new URLSearchParams(window.location.search);
         let numHands = params.get('numHands')
         
-        this.setState({
-          numHands: +numHands,
-          deckId: deck_id,
-          hand: cards,
-        })
+          return this.setState({
+            numHands: +numHands - 1,
+            deckId: deck_id,
+            hand: cards,
+            gameInProgress: true
+          })
+        })    
+    } else {
+      let handsLeft = this.state.numHands;
+      handsLeft--
 
-      })
+      fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/shuffle/`)
+        .then(response => response.json())
+      
+      fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=5`)
+        .then(response => response.json())
+        .then(({ cards }) => {
+          return this.setState({
+            numHands: handsLeft,
+            hand: cards,
+            buttonClicked: !this.state.buttonClicked,
+            cardsToSwap: [],
+            finalHand: "",
+          })
+        });
+
+
+
+    }
   }
 
   handleHitClick = (cardCode, card) => {
@@ -158,6 +187,17 @@ export default class Game extends Component {
   }
 }
 
+// nextHand = () => {
+//   let presentHand = this.state.numHands;
+//   presentHand--;
+//   console.log(presentHand)
+//   return this.setState({ 
+//     numHands: presentHand,
+//     buttonClicked: false,
+//     hand: [],
+//    });
+// }
+
 
   render(){
     return(
@@ -184,6 +224,7 @@ export default class Game extends Component {
               finalHand={this.state.hand} 
               straightHands={this.state.straightHands} 
               numHands={this.state.numHands}
+              newHand={this.newHand}
             />
           : null}
       </div>

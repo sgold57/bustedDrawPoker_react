@@ -83,7 +83,7 @@ body {
 	text-align: center;
 }
 
-.game-start-select, .game-start-submit {
+.game-start-select, .game-start-submit, .next-hand-button {
 	width: 50px;
 	margin-left: 50%;
 }
