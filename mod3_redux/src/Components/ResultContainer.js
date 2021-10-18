@@ -1,5 +1,4 @@
 import { React, Component } from 'react';
-import { Link } from 'react-router-dom'
 import '../App.css'
 
 export default class ResultContainer extends Component{
@@ -9,11 +8,11 @@ export default class ResultContainer extends Component{
     return (
       <div>
         <h4 className="result-container">{
-          this.props.evaluateHand(this.props.finalHand, this.props.straightHands)}
+          this.props.finalHandResult}
         </h4>
         {this.props.numHands === 0 ?
-          <form action='/'>
-            <input type='submit' value='play again' />
+          <form  className='new-game-button' action='/'>
+            <input type='submit' value='Play Again?' />
           </form> :
           // <button className='next-hand-button'>
           //   <Link to='/'>GAME OVER...Play again?</Link> 
@@ -26,3 +25,6 @@ export default class ResultContainer extends Component{
   }
 
 }
+
+
+// this.props.evaluateHand(this.props.finalHand, this.props.straightHands)

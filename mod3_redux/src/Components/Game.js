@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css';
-import HandContainer from "./HandContainer";
-import ResultContainer from "./ResultContainer";
+import HandContainer from './HandContainer';
+import ResultContainer from './ResultContainer';
+import ScoreDiv from './ScoreDiv';
 
 
 export default class Game extends Component {
@@ -23,7 +24,7 @@ export default class Game extends Component {
       '0,9,J,K,Q',
       '0,A,J,K,Q'
     ],
-    finalHand: "",
+    finalHandResult: "",
     numHands: undefined,
     gameInProgress: false,
     score: 0
@@ -56,6 +57,7 @@ export default class Game extends Component {
 
       fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/shuffle/`)
         .then(response => response.json())
+        .then(newDeck => console.log(newDeck))
       
       fetch(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/?count=5`)
         .then(response => response.json())
@@ -65,7 +67,6 @@ export default class Game extends Component {
             hand: cards,
             buttonClicked: !this.state.buttonClicked,
             cardsToSwap: [],
-            finalHand: "",
           })
         });
 
@@ -96,13 +97,20 @@ export default class Game extends Component {
         this.state.cardsToSwap.forEach(oldCard => {
           let cardIndex = this.state.hand.findIndex(card => card === oldCard) 
           this.state.hand.splice(cardIndex, 1, cards[newCardsIndex]);
-    
+          
           
           newCardsIndex++;
         })
 
+        let handOutcome = this.evaluateHand(this.state.hand, this.state.straightHands);
+
+
         this.setState({
           buttonClicked: !this.state.buttonClicked,
+          score: this.state.score + handOutcome[1],
+          finalHandResult: handOutcome[0]
+
+          
         })
 
         
@@ -114,6 +122,9 @@ export default class Game extends Component {
     let valueArray = [];
     let valueBreakdown = {};
     let suitArray = [];
+    let handScore = 0;
+
+    console.log(hand)
     
     hand.forEach(card => {
       valueArray.push(card.code[0])
@@ -122,19 +133,22 @@ export default class Game extends Component {
 
     let flushCheckSuit = suitArray[0];
     let forStraightCheck = valueArray.sort();
+    console.log(forStraightCheck)
     let flush = checkForFlush(flushCheckSuit, suitArray);
     let valueFrequencies = breakdownValues(valueArray, valueBreakdown);
     let valueEvaluation = pairTwoPairTripsBoatCheck(valueFrequencies, forStraightCheck, straightHands);
   
 
     if (flush && valueEvaluation === "STRAIGHT"){
+      handScore = 25;
       handResult = "STRAIGHT FLUSH (+25 PTS)"
     } else if (flush) {
+      handScore = 7;
       handResult = "FLUSH (+7 PTS)"
     } else {
       handResult = valueEvaluation
-    }
-  return handResult;
+    } 
+  return [handResult, handScore];
 
 
   function checkForFlush(suit, cardHand) {
@@ -162,35 +176,40 @@ export default class Game extends Component {
     let quads = Object.values(valueFrequencies).filter(value => value === 4).length;
     
     if (quads === 1){
-      // this.setState({ score: this.state.score + 20 })
+      handScore = 20;
       return "QUADS (+20 PTS)";
     } else if (trips === 1) {
       if (pairs === 1) {
-        // this.setState({ score: this.state.score + 10 })
+        handScore = 10;
+
         return "FULL HOUSE (+10 PTS)";
       } else {
-        // this.setState({ score: this.state.score + 3 })
+        handScore = 3;
+
         return "TRIPS (+3 PTS)";
       }
     } else if (pairs === 2){
-      // this.setState({ score: this.state.score + 2 })
-      return "TWO PAIR (+2 PTS)"
+        handScore = 2;
+        return "TWO PAIR (+2 PTS)"
     } else if (pairs === 1){
-        // this.setState({ score: this.state.score + 1 })
+        handScore = 1;
         return "PAIR (+1 PT)"
     } else {
-      return straightCheck(forStraightCheck, straightHands);
+        return straightCheck(forStraightCheck, straightHands);
     }
 
   }
     
   function straightCheck(array, straightHands){    
     if (straightHands.find(hand => hand === array.toString())) {
+      handScore = 5;
+
       return "STRAIGHT (+5 PTS)"
     } else {
       return "NO HAND"
     }
   }
+
 }
 
 // nextHand = () => {
@@ -214,14 +233,17 @@ export default class Game extends Component {
           handleHitClick={this.handleHitClick}             
           buttonClicked={this.state.buttonClicked}
         />
-        <div className='score-div'>{`SCORE: ${this.state.score}`}</div>
+        <ScoreDiv score={this.state.score} />
         <button 
           className="hit-button" 
           style={ this.state.buttonClicked ? 
                   { display: 'none' } : 
                   { display: 'block'}
                 }
-          onClick={() => this.takeHit()}
+          onClick={() => {
+            this.takeHit();
+          }
+          }
         >
           HIT FOR {this.state.cardsToSwap.length} CARDS
         </button>
@@ -232,6 +254,7 @@ export default class Game extends Component {
               straightHands={this.state.straightHands} 
               numHands={this.state.numHands}
               newHand={this.newHand}
+              finalHandResult= {this.state.finalHandResult}
             />
           : null}
       </div>
