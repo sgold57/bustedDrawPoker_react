@@ -76,17 +76,18 @@ body {
 	border-color: greenyellow; */
 }
 
-.game-start-text {
+.game-start-text, .score-div {
 	font-family: Wantedo;
 	color: red;
   font-size: 32px;
 	text-align: center;
 }
 
-.game-start-select, .game-start-submit {
+.game-start-select, .game-start-submit{
 	width: 50px;
 	margin-left: 50%;
 }
+
 
 #game-start-photo {
 	margin-left: 30%;
@@ -110,6 +111,7 @@ body {
 	margin-bottom:25px;
 }
 
+
 .hit-button{
 	display: block;
 	margin: auto;
@@ -122,4 +124,13 @@ body {
 	font-family: Wantedo;
 	font-size:54px;
 	text-align: center;
+}
+
+.next-hand-button {
+	width: 100px;
+	margin-left: 45%;
+}
+
+.new-game-button {
+	margin-left: 45%;
 }

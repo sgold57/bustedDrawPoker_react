@@ -23,6 +23,7 @@ componentDidMount(){
             buttonClicked={this.props.buttonClicked}
           />
         )}
+
       </div>
     )
   }

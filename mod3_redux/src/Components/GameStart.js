@@ -8,7 +8,7 @@ export default class GameStart extends Component {
 render(){
   return (
     <div>
-        <img id='game-start-photo' src={GameStartPhoto} alt='Dual Revolvers'></img>
+        <img id='game-start-photo' src={GameStartPhoto} alt='Revolver'></img>
         <form className='game-start-form' action="/newGame">
           <label className='game-start-text'>How many hands would you like to play?</label>
           <select className='game-start-select' name='numHands'>
