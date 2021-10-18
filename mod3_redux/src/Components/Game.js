@@ -25,7 +25,8 @@ export default class Game extends Component {
     ],
     finalHand: "",
     numHands: undefined,
-    gameInProgress: false
+    gameInProgress: false,
+    score: 0
 
   }
   
@@ -127,9 +128,9 @@ export default class Game extends Component {
   
 
     if (flush && valueEvaluation === "STRAIGHT"){
-      handResult = "STRAIGHT FLUSH"
+      handResult = "STRAIGHT FLUSH (+25 PTS)"
     } else if (flush) {
-      handResult = "FLUSH"
+      handResult = "FLUSH (+7 PTS)"
     } else {
       handResult = valueEvaluation
     }
@@ -161,17 +162,22 @@ export default class Game extends Component {
     let quads = Object.values(valueFrequencies).filter(value => value === 4).length;
     
     if (quads === 1){
-      return "QUADS";
+      // this.setState({ score: this.state.score + 20 })
+      return "QUADS (+20 PTS)";
     } else if (trips === 1) {
       if (pairs === 1) {
-        return "FULL HOUSE";
+        // this.setState({ score: this.state.score + 10 })
+        return "FULL HOUSE (+10 PTS)";
       } else {
-        return "TRIPS";
+        // this.setState({ score: this.state.score + 3 })
+        return "TRIPS (+3 PTS)";
       }
     } else if (pairs === 2){
-      return "TWO PAIR"
+      // this.setState({ score: this.state.score + 2 })
+      return "TWO PAIR (+2 PTS)"
     } else if (pairs === 1){
-        return "PAIR"
+        // this.setState({ score: this.state.score + 1 })
+        return "PAIR (+1 PT)"
     } else {
       return straightCheck(forStraightCheck, straightHands);
     }
@@ -180,7 +186,7 @@ export default class Game extends Component {
     
   function straightCheck(array, straightHands){    
     if (straightHands.find(hand => hand === array.toString())) {
-      return "STRAIGHT"
+      return "STRAIGHT (+5 PTS)"
     } else {
       return "NO HAND"
     }
@@ -208,6 +214,7 @@ export default class Game extends Component {
           handleHitClick={this.handleHitClick}             
           buttonClicked={this.state.buttonClicked}
         />
+        <div className='score-div'>{`SCORE: ${this.state.score}`}</div>
         <button 
           className="hit-button" 
           style={ this.state.buttonClicked ? 
